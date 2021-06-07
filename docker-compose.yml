@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql:8
+    volumes:
+      - db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: db_ss5
+      MYSQL_USER: ss5
+      MYSQL_PASSWORD: 1234
+  ss5:
+    image: aos-ss5:0.5
+    restart: always
+    ports:
+      - 8081:8080
+    depends_on: 
+      - db
+    environment:
+      SS5_DB_HOST: db
+      SS5_DB_USER: ss5
+      SS5_DB_PASSWORD: 1234
+      SS5_DB_NAME: db_ss5
+  dbadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_USER: ss5
+      MYSQL_PASSWORD: 1234
+volumes:
+  ss5:
+  db:
+  dbadmin:

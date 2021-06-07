@@ -1,0 +1,724 @@
+openapi: 3.0.3
+info:
+  title: Facturas AOS
+  description: Especificacion facturas para la asignatura AOS
+  version: v1
+servers:
+- url: "{schema}://{server}:{port}/{basePath}"
+  description: Servidor local
+  variables:
+    schema:
+      description: Esquema
+      default: http
+      enum:
+      - http
+      - https
+    server:
+      description: Nombre del servidor
+      default: 127.0.0.1
+    port:
+      description: Número de puerto
+      default: "80"
+    basePath:
+      description: Ruta base
+      default: api/v1
+tags:
+- name: Factura
+  description: Factura con el conjunto de trabajos realizados en un vehiculo
+paths:
+  /factura:
+    get:
+      tags:
+      - Factura
+      summary: Obtiene todas las facturas
+      operationId: upm_aos_facturas_get
+      responses:
+        "200":
+          description: Array de facturas
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+              examples:
+                facturasExamples:
+                  $ref: '#/components/examples/facturas'
+        "404":
+          description: "`NOT FOUND`: recurso no disponible"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-404:
+                  $ref: '#/components/examples/response-http-404'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+    post:
+      tags:
+      - Factura
+      summary: Genera la factura de un usuario
+      description: Genera la factura con un conjunto de trabajos y un importe.
+      operationId: upm_aos_factura_post
+      requestBody:
+        $ref: '#/components/requestBodies/facturaPostRB'
+      responses:
+        "201":
+          description: Factura
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        "404":
+          description: "`NOT FOUND`: recurso no disponible"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-404:
+                  $ref: '#/components/examples/response-http-404'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+    options:
+      tags:
+      - Factura
+      summary: Proporciona la lista de los métodos HTTP soportados.
+      description: Devuelve una cabecera `Allow` con la lista de métodos HTTP soportados
+        (separados por comas).
+      operationId: upm_aos_factura_options
+      responses:
+        "204":
+          description: cabecera `Allow` &lt;El cuerpo de la respuesta está vacío&gt;
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+  /factura/facturaId/{facturaId}:
+    get:
+      tags:
+      - Factura
+      summary: Obtiene una factura por su ID
+      description: Obtiene una factura identificada por su facturaID.
+      operationId: upm_aos_factura_fget
+      parameters:
+      - name: facturaId
+        in: path
+        description: ID de la factura
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      responses:
+        "200":
+          description: Factura
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        "404":
+          description: "`NOT FOUND`: recurso no disponible"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-404:
+                  $ref: '#/components/examples/response-http-404'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+    put:
+      tags:
+      - Factura
+      summary: Modifica la factura.
+      description: Actualiza la factura identificada por facturaId.
+      operationId: upm_aos_factura_put
+      parameters:
+      - name: facturaId
+        in: path
+        description: ID de la factura
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      - name: If_Match
+        in: header
+        description: ETag del recurso que se desea modificar
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "[0-9a-f]*"
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/facturaPutRB'
+      responses:
+        "200":
+          description: "`OK`: la factura ha sido modificada"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        "404":
+          description: "`NOT FOUND`: recurso no disponible"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-404:
+                  $ref: '#/components/examples/response-http-404'
+        "412":
+          description: "`PRECONDITION FAILED`: no se cumple alguna condición previa"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-412:
+                  $ref: '#/components/examples/response-http-412'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+    delete:
+      tags:
+      - Factura
+      summary: Elimina una factura.
+      description: Elimina la factura identificada por facturaId
+      operationId: upm_aos_factura_delete
+      parameters:
+      - name: facturaId
+        in: path
+        description: ID de la factura
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      responses:
+        "204":
+          description: Factura eliminada &lt;Cuerpo de la respuesta vacío&gt;
+        "404":
+          description: "`NOT FOUND`: recurso no disponible"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-404:
+                  $ref: '#/components/examples/response-http-404'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+    options:
+      tags:
+      - Factura
+      summary: Proporciona la lista de los métodos HTTP soportados.
+      description: Devuelve una cabecera `Allow` con la lista de métodos HTTP soportados
+        (separados por comas).
+      operationId: upm_aos_factura_foptions
+      parameters:
+      - name: facturaId
+        in: path
+        description: ID de la factura
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      responses:
+        "204":
+          description: cabecera `Allow` &lt;El cuerpo de la respuesta está vacío&gt;
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+  /factura/vehiculoId/{vehiculoId}:
+    get:
+      tags:
+      - Factura
+      summary: Obtiene todas las facturas de un vehiculo
+      description: Obtiene todas las facturas de un vehiculo por su vehiculoId
+      operationId: upm_aos_factura_vget
+      parameters:
+      - name: vehiculoId
+        in: path
+        description: ID del vehiculo
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      responses:
+        "200":
+          description: Factura
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        "404":
+          description: "`NOT FOUND`: recurso no disponible"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-404:
+                  $ref: '#/components/examples/response-http-404'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+    options:
+      tags:
+      - Factura
+      summary: Proporciona la lista de los métodos HTTP soportados.
+      description: Devuelve una cabecera `Allow` con la lista de métodos HTTP soportados
+        (separados por comas).
+      operationId: upm_aos_factura_voptions
+      parameters:
+      - name: vehiculoId
+        in: path
+        description: ID del vehiculo
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      responses:
+        "204":
+          description: cabecera `Allow` &lt;El cuerpo de la respuesta está vacío&gt;
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+  /factura/userId/{userId}:
+    get:
+      tags:
+      - Factura
+      summary: Obtiene todas las facturas de un usuario
+      description: Obtiene todas las facturas de un usuario por su userId
+      operationId: upm_aos_factura_uget
+      parameters:
+      - name: userId
+        in: path
+        description: ID del usuario
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      responses:
+        "200":
+          description: Factura
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        "404":
+          description: "`NOT FOUND`: recurso no disponible"
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/HTTP_Problem'
+              examples:
+                response-http-404:
+                  $ref: '#/components/examples/response-http-404'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+    options:
+      tags:
+      - Factura
+      summary: Proporciona la lista de los métodos HTTP soportados.
+      description: Devuelve una cabecera `Allow` con la lista de métodos HTTP soportados
+        (separados por comas).
+      operationId: upm_aos_factura_uoptions
+      parameters:
+      - name: userId
+        in: path
+        description: ID del usuario
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: ^\d+$
+          type: integer
+      responses:
+        "204":
+          description: cabecera `Allow` &lt;El cuerpo de la respuesta está vacío&gt;
+          headers:
+            Allow:
+              $ref: '#/components/headers/Allow'
+      x-openapi-router-controller: swagger_server.controllers.factura_controller
+components:
+  schemas:
+    Factura:
+      type: object
+      properties:
+        facturaId:
+          type: integer
+          description: Id Factura
+          format: int32
+          readOnly: true
+        userId:
+          type: integer
+          description: user Id
+          format: int32
+          readOnly: true
+        vehiculoId:
+          type: integer
+          description: Id vehiculo
+          format: int32
+          readOnly: true
+        fechaEmision:
+          type: string
+          description: Fecha de creacion de la factura
+          format: date
+          readOnly: true
+        importe:
+          type: number
+          description: Importe total
+          readOnly: false
+        importeIVA:
+          type: number
+          description: Importe con IVA
+          readOnly: false
+        links:
+          type: array
+          description: Listado de trabajos
+          items:
+            $ref: '#/components/schemas/Factura_links'
+      description: Documento que refleja un conjunto de trabajos realizados en un
+        vehiculo
+      example:
+        facturaId: 5623
+        userId: 21
+        vehiculoId: 67
+        fechaEmision: 2021-03-29
+        importe: 234
+        iporteIVA: 283.14
+        links:
+        - href: api/v1/trabajo/1111
+          rel: trabajo
+        - href: api/v1/trabajo/1112
+          rel: trabajo
+    HTTP_Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "A URI reference [RFC3986] that identifies the problem type"
+          format: uri
+        title:
+          type: string
+          description: short human-readable summary of the problem type
+        status:
+          type: number
+          description: HTTP status code
+        detail:
+          type: string
+          description: human-readable explanation specific to this occurrence of the
+            problem
+        instance:
+          type: string
+          description: A URI reference that identifies the specific occurrence of
+            the problem.  It may or may not yield further information if dereferenced
+          format: uri
+      description: Problem Details for HTTP APIs
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7807
+    inline_response_200:
+      type: object
+      properties:
+        facturas:
+          type: array
+          description: array de facturas
+          items:
+            $ref: '#/components/schemas/Factura'
+      example:
+        facturas:
+        - facturaId: 5623
+          userId: 21
+          vehiculoId: 67
+          fechaEmision: 2021-03-29
+          importe: 234
+          iporteIVA: 283.14
+          links:
+          - href: api/v1/trabajo/1111
+            rel: trabajo
+          - href: api/v1/trabajo/1112
+            rel: trabajo
+        - facturaId: 5623
+          userId: 21
+          vehiculoId: 67
+          fechaEmision: 2021-03-29
+          importe: 234
+          iporteIVA: 283.14
+          links:
+          - href: api/v1/trabajo/1111
+            rel: trabajo
+          - href: api/v1/trabajo/1112
+            rel: trabajo
+    Factura_links:
+      type: object
+      properties:
+        href:
+          type: string
+          description: URL del enlace
+          format: url
+          x-faker: internet.url
+        rel:
+          type: string
+          description: Relación del documento enlazado con el actual. Contiene una
+            lista de tipos de enlaces separados por espacio.
+          x-faker: lorem.words
+      description: Enlace de relación
+  responses:
+    Response_404:
+      description: "`NOT FOUND`: recurso no disponible"
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/HTTP_Problem'
+          examples:
+            response-http-404:
+              $ref: '#/components/examples/response-http-404'
+    Response_412:
+      description: "`PRECONDITION FAILED`: no se cumple alguna condición previa"
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/HTTP_Problem'
+          examples:
+            response-http-412:
+              $ref: '#/components/examples/response-http-412'
+    Response_422:
+      description: "`UNPROCESSABLE ENTITY`: falta la referencia o las unidades"
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/HTTP_Problem'
+          examples:
+            response-http-422:
+              $ref: '#/components/examples/response-http-422'
+  parameters:
+    facturaId:
+      name: facturaId
+      in: path
+      description: ID de la factura
+      required: true
+      style: simple
+      explode: false
+      schema:
+        pattern: ^\d+$
+        type: integer
+    ifMatchParam:
+      name: If_Match
+      in: header
+      description: ETag del recurso que se desea modificar
+      required: true
+      style: simple
+      explode: false
+      schema:
+        pattern: "[0-9a-f]*"
+        type: string
+    vehiculoId:
+      name: vehiculoId
+      in: path
+      description: ID del vehiculo
+      required: true
+      style: simple
+      explode: false
+      schema:
+        pattern: ^\d+$
+        type: integer
+    userId:
+      name: userId
+      in: path
+      description: ID del usuario
+      required: true
+      style: simple
+      explode: false
+      schema:
+        pattern: ^\d+$
+        type: integer
+  examples:
+    facturas:
+      value:
+      - facturaId: 5623
+        userId: 21
+        vehiculoId: 67
+        fechaEmision: 2021-03-29
+        importe: 234
+        iporteIVA: 283.14
+        links:
+        - href: api/v1/trabajo/1111
+          rel: trabajo
+        - href: api/v1/trabajo/1112
+          rel: trabajo
+      - facturaId: 1345
+        userId: 12
+        vehiculoId: 15
+        fechaEmision: 2020-07-13
+        importe: 567.94
+        iporteIVA: 723.5
+        links:
+        - href: api/v1/trabajo/1113
+          rel: trabajo
+    response-http-404:
+      value:
+        type: https://httpstatuses.com/404
+        title: NOT FOUND
+        status: 404
+        detail: El recurso solicitado no está disponible...
+        instance: about:blank
+    response-http-412:
+      value:
+        type: https://httpstatuses.com/412
+        title: PRECONDITION FAILED
+        status: 412
+        detail: No se cumple alguna condición previa...
+        instance: about:blank
+    response-http-422:
+      value:
+        type: https://httpstatuses.com/422
+        title: UNPROCESSABLE ENTITY
+        status: 422
+        detail: Falta la referencia o las unidades...
+        instance: about:blank
+  requestBodies:
+    facturaPostRB:
+      description: '`Factura` data'
+      content:
+        application/json:
+          schema:
+            required:
+            - facturaId
+            - fechaEmision
+            - importe
+            - importeIVA
+            - links
+            - userId
+            - vehiculoId
+            type: object
+            properties:
+              facturaId:
+                type: integer
+                description: Id Factura
+                format: int32
+                readOnly: true
+              userId:
+                type: integer
+                description: user Id
+                format: int32
+                readOnly: true
+              vehiculoId:
+                type: integer
+                description: Id vehiculo
+                format: int32
+                readOnly: true
+              fechaEmision:
+                type: string
+                description: Fecha de creacion de la factura
+                format: date
+                readOnly: true
+              importe:
+                type: number
+                description: Importe total
+                readOnly: true
+              importeIVA:
+                type: number
+                description: Importe con IVA
+                readOnly: true
+              links:
+                type: array
+                description: Listado de trabajos
+                items:
+                  type: object
+                  properties:
+                    href:
+                      type: string
+                      description: URL del enlace
+                      format: url
+                      x-faker: internet.url
+                    rel:
+                      type: string
+                      description: Relación del documento enlazado con el actual.
+                        Contiene una lista de tipos de enlaces separados por espacio.
+                      x-faker: lorem.words
+                  description: Enlace de relación
+            example:
+              facturaId: 34212
+              userId: 23
+              vehiculoId: 1234
+              fechaEmision: 2021-11-21
+              importe: 590.45
+              importeIVA: 714.45
+              links:
+              - href: /api/v1/trabajo/1111
+                rel: trabajo
+              - href: /api/v1/trabajo/1112
+                rel: trabajo
+              - href: /api/v1/trabajo/1113
+                rel: trabajo
+      required: true
+    facturaPutRB:
+      description: '`Factura` data'
+      content:
+        application/json:
+          schema:
+            required:
+            - importe
+            - importeIVA
+            type: object
+            properties:
+              importe:
+                type: number
+                description: Importe de la factura sin IVA
+              importeIVA:
+                type: number
+                description: Importe de la factura con IVA
+            example:
+              importe: 237.98
+              importeIVA: 287.96
+      required: true
+  headers:
+    ETag:
+      description: Entity Tag (identificador único proporcionado para validación de
+        caché)
+      style: simple
+      explode: false
+      schema:
+        pattern: "[0-9a-f]*"
+        type: string
+        example: 0242ac130003abs3
+        x-faker: random.uuid
+    Location:
+      description: '`URI` del nuevo recurso'
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: url
+        example: /api/v1/factura/5623
+        x-faker: internet.url
+    Allow:
+      description: Lista de métodos HTTP soportados
+      style: simple
+      explode: false
+      schema:
+        type: string
+      example: "GET,DELETE,PUT,OPTIONS"
+
