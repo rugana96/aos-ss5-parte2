@@ -1,0 +1,56 @@
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taller
+  labels:
+    app: taller
+spec:
+  selector:
+    matchLabels:
+      app: taller
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: taller
+    spec:
+      containers:
+        - image: rugana90/aos-ss5:0.5
+          name: ss5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 200Mi
+          ports:
+            - containerPort: 8081
+        - image: rugana90/aos-ss6:0.5
+          name: ss6
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 200Mi
+          ports:
+            - containerPort: 8082
+
+---
+
+#Service taller
+apiVersion: v1
+kind: Service
+metadata:
+  name: taller
+  labels:
+    app: taller
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: taller
+  type: NodePort

@@ -1,0 +1,191 @@
+#Service aos-ss1
+apiVersion: v1
+kind: Service
+metadata:
+  name: ss1
+  labels:
+    app: taller
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8080
+  selector:
+    app: taller
+  type: NodePort
+
+---
+
+#Service aos-ss2
+apiVersion: v1
+kind: Service
+metadata:
+  name: ss2
+  labels:
+    app: taller
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8080
+  selector:
+    app: taller
+  type: NodePort
+
+---
+
+#Service aos-ss3
+apiVersion: v1
+kind: Service
+metadata:
+  name: ss3
+  labels:
+    app: taller
+spec:
+  ports:
+    - port: 8083
+      targetPort: 8080
+  selector:
+    app: taller
+  type: NodePort
+
+---
+
+#Service aos-ss4
+apiVersion: v1
+kind: Service
+metadata:
+  name: ss4
+  labels:
+    app: taller
+spec:
+  ports:
+    - port: 8084
+      targetPort: 8080
+  selector:
+    app: taller
+  type: NodePort
+
+---
+
+#Service aos-ss5
+apiVersion: v1
+kind: Service
+metadata:
+  name: ss5
+  labels:
+    app: taller
+spec:
+  ports:
+    - port: 8085
+      targetPort: 8080
+  selector:
+    app: taller
+  type: NodePort
+
+---
+
+#Service aos-ss6
+apiVersion: v1
+kind: Service
+metadata:
+  name: ss6
+  labels:
+    app: taller
+spec:
+  ports:
+    - port: 8086
+      targetPort: 8080
+  selector:
+    app: taller
+  type: NodePort
+
+---
+
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taller
+  labels:
+    app: taller
+spec:
+  selector:
+    matchLabels:
+      app: taller
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: taller
+    spec:
+      containers:
+      - image: rugana90/aos-ss1:0.5
+        name: ss1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: 8081
+
+      - image: rugana90/aos-ss2:0.5
+        name: ss2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: 8082
+
+      - image: rugana90/aos-ss3:0.5
+        name: ss3
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: 8083
+
+      - image: rugana90/aos-ss4:0.5
+        name: ss4
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: 8084
+
+      - image: rugana90/aos-ss5:0.5
+        name: ss5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: 8085
+
+      - image: rugana90/aos-ss6:0.5
+        name: ss6
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: 8086

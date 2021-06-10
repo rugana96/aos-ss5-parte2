@@ -1,0 +1,35 @@
+//Incluir en el fichero README.md al entregar la práctica
+
+Para lanzar nuestro subsistema:
+
+docker compose -f docker-compose-ss5.yml up -d
+
+Para lanzar todos los subsistemas:
+
+docker compose -f docker-compose-taller.yml up -d
+
+Puerto 8080 (PHPMyAdmin):
+    - http://localhost:8080/
+    - BD name: db_taller
+    - root user: root
+    - root passwrod: root123
+    - user: user_taller
+    - user password: taller123
+
+Puerto 8081 (SS1 - Clientes):
+    - http://localhost:8081/clientes
+
+Puerto 8082 (SS2 - Vehículos):
+    - http://localhost:8082/api/v1/vehiculo
+
+Puerto 8083 (SS3 - Trabajos):
+    - http://localhost:8083/api/v1/trabajo
+
+Puerto 8084 (SS4 - Notificaciones):
+    - http://localhost:8084/AOS4/swagger-ui/
+
+Puerto 8085 (SS5 - Facturas):
+    - http://localhost:8085/api/v1/factura
+
+Puerto 8086 (SS6 - Recambios):
+    - http://localhost:8086/api/v1/recambios
