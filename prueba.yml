@@ -26,18 +26,8 @@ spec:
               cpu: 200m
               memory: 200Mi
           ports:
-            - containerPort: 8081
-        - image: rugana90/aos-ss6:0.5
-          name: ss6
-          resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
-            limits:
-              cpu: 200m
-              memory: 200Mi
-          ports:
-            - containerPort: 8082
+            - name: ss5
+              containerPort: 8081
 
 ---
 
@@ -49,7 +39,7 @@ metadata:
   labels:
     app: taller
 spec:
-  ports:
+  ports: 
     - port: 8080
   selector:
     app: taller
