@@ -112,11 +112,6 @@ Para acceder a cada servicio utilizaremos las siguientes direcciones:
 
 Puerto 8080 (PHPMyAdmin):
     - http://localhost:8080/
-    - BD name: db_taller
-    - root user: root
-    - root passwrod: root123
-    - user: user_taller
-    - user password: taller123
 
 Puerto 8081 (SS1 - Clientes):
     - http://localhost:8081/clientes
