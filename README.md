@@ -97,7 +97,7 @@ http://localhost:8081/api/v1/factura
 Hemos creado dos tipos de usuarios:
  - Un usario root con credenciales: root / root123
  - Un usario taller con credenciales: user_taller / taller123
- - 
+
 En segundo lugar hemos creado un Docker Compose para levantar todos los servicios a la vez. También cuenta con una base de datos y PHPMyAdmin.
 
 Para utilizarlo, lo levantamos con:
