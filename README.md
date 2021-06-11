@@ -97,7 +97,9 @@ http://localhost:8081/api/v1/factura
 Hemos creado dos tipos de usuarios:
  - Un usario root con credenciales: root / root123
  - Un usario taller con credenciales: user_taller / taller123
+ - 
 En segundo lugar hemos creado un Docker Compose para levantar todos los servicios a la vez. También cuenta con una base de datos y PHPMyAdmin.
+
 Para utilizarlo, lo levantamos con:
 ```
 docker compose -f docker-compose-taller.yml up
@@ -107,6 +109,7 @@ Podemos acceder a PHPMyAdmin con las credenciales previas a través de:
 http://localhost:8080
 ```
 Para acceder a cada servicio utilizaremos las siguientes direcciones:
+
 Puerto 8080 (PHPMyAdmin):
     - http://localhost:8080/
     - BD name: db_taller
