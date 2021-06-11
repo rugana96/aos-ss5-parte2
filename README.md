@@ -10,7 +10,7 @@ Proyecto de la asignatura Arquitectura Orientada a Servicios (AOS) de la Univers
 | Ignacio García Pardina | ignacio.garcia.pardina@alumnos.upm.es |
 | David Ramajo Fernández | d.ramajo@alumnos.upm.es |
 
-## ENLACE DOCKER HUB:
+## ENLACE DOCKER HUB 🐋:
 En el siguiente enlace se puede encontrar la imagen de Docker asociada a nuestro servicio en la práctica 1 (facturación)
 https://hub.docker.com/r/rugana90/aos-ss5
 
@@ -33,7 +33,7 @@ En el navegador escribimos:
 http://localhost:8080/api/v1/factura
 ```
 
-## Uso con Docker
+## Uso con Docker 🐋
 Para correr en el servidor en un contenedor de Docker, ejecuta el siguiente comando en el directorio root:
 ```
 # Construimos de la imagen
@@ -51,7 +51,7 @@ En el navegador escribimos:
 http://localhost:8080/api/v1/factura
 ```
 
-## Uso con imagen desde DockerHub:
+## Uso con imagen desde DockerHub 🐋:
 Hacemos pull de la imagen desde el repositorio:
 ```
 docker pull rugana90/aos-ss5:0.5
@@ -64,7 +64,6 @@ En el navegador escribimos:
 ```
 http://localhost:8080/api/v1/factura
 ```
-## Busquedas:
 Para hacer una busqueda de un parametro utilizamos
 ```
 http://localhost:8080/api/v1/factura/Parametro/ID
@@ -79,7 +78,7 @@ http://localhost:8080/api/v1/factura/facturaId/1234
 ```
 Nos mostrara la factura con ID igual a '1234'
 
-## Docker-Compose:
+## Docker-Compose 🐙:
 Hemos creado dos Docker Compose para esta práctica.
 En primer lugar hemos creado uno para realizar el despliegue de nuestro subsistema junto con una base de datos y un administrador como es PHPMyAdmin.
 Para utilizarlo, lo levantamos con:
@@ -130,3 +129,46 @@ Puerto 8085 (SS5 - Facturas):
 
 Puerto 8086 (SS6 - Recambios):
     - http://localhost:8086/api/v1/recambios
+
+## Despliegue Kubernetes ☸️:
+Los detalles del despliegue vienen mejor explicados en el archivo Memoria_Grupo2 que se adjuntará en la entrega.
+
+Para realizar el despliegue, lo primero que hacemos es iniciar minikube:
+```
+minikube start
+```
+Lanzamos el despliegue:
+```
+kubectl apply -f deployment.yml
+```
+Automáticamente se nos iniciarán todos los deployments, servicios y pods creados, podemos visualizar esto a través del dashboard con:
+```
+minikube dashboard
+```
+Para comprobar que funciona cada servicio escribimos:
+```
+minikube service ss1 --url
+minikube service ss2 --url
+minikube service ss3 --url
+minikube service ss4 --url
+minikube service ss5 --url
+minikube service ss6 --url
+```
+Accedemos a la URL que se genera y dependiendo del subsistema que estemos utilizando utilizaremos una ruta u otra:
+SS1 - Clientes:
+    - URL/clientes
+
+SS2 - Vehículos:
+    - URL/api/v1/vehiculo
+
+SS3 - Trabajos:
+    - URL/api/v1/trabajo
+
+SS4 - Notificaciones:
+    - URL/AOS4/swagger-ui/
+
+SS5 - Facturas:
+    - URL/api/v1/factura
+    
+SS6 - Recambios:
+    - URL/api/v1/recambios
