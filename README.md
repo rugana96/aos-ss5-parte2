@@ -15,11 +15,11 @@ En el siguiente enlace se puede encontrar la imagen de Docker asociada a nuestro
 https://hub.docker.com/r/rugana90/aos-ss5
 
 También hemos subido las de los demás equipos para la realización de esta práctica
-https://hub.docker.com/r/rugana90/aos-ss1
-https://hub.docker.com/r/rugana90/aos-ss2
-https://hub.docker.com/r/rugana90/aos-ss3
-https://hub.docker.com/r/rugana90/aos-ss4
-https://hub.docker.com/r/rugana90/aos-ss6
+- https://hub.docker.com/r/rugana90/aos-ss1
+- https://hub.docker.com/r/rugana90/aos-ss2
+- https://hub.docker.com/r/rugana90/aos-ss3
+- https://hub.docker.com/r/rugana90/aos-ss4
+- https://hub.docker.com/r/rugana90/aos-ss6
 
 ## Uso
 Para correr el servidor ejecutar desde el directorio root:
